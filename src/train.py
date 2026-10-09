@@ -9,6 +9,7 @@ Run `pytest tests/test_train.py` after you fill them in. The first run
 downloads the ImageNet weights, about 45 MB.
 """
 
+import numpy as np
 import torch
 import torch.nn as nn
 
@@ -35,7 +36,19 @@ def build_model(num_classes, pretrained=True, freeze=False):
     Do not put a softmax at the end. The loss function adds it for you, and the
     web page adds it for you.
     """
-    raise NotImplementedError("Problem 3: fill in build_model")
+    from torchvision.models import ResNet18_Weights, resnet18
+
+    weights = ResNet18_Weights.IMAGENET1K_V1 if pretrained else None
+    model = resnet18(weights=weights)
+    model.fc = nn.Linear(512, num_classes)
+
+    if freeze:
+        for parameter in model.parameters():
+            parameter.requires_grad = False
+        for parameter in model.fc.parameters():
+            parameter.requires_grad = True
+
+    return model
 
 
 def train(model, X_train, y_train, X_test, y_test,
@@ -78,7 +91,77 @@ def train(model, X_train, y_train, X_test, y_test,
     The model is trained in place. When this function returns, `model` is the
     trained one, and it is left on the device it was trained on.
     """
-    raise NotImplementedError("Problem 3: fill in train")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
+
+    loss_fn = nn.CrossEntropyLoss()
+    trainable = [parameter for parameter in model.parameters() if parameter.requires_grad]
+    optimiser = torch.optim.Adam(trainable, lr=lr)
+    rng = np.random.default_rng()
+
+    history = {
+        "train_loss": [],
+        "train_acc": [],
+        "test_loss": [],
+        "test_acc": [],
+    }
+
+    for epoch in range(epochs):
+        model.train()
+        order = rng.permutation(len(X_train))
+        batch_losses = []
+        correct = 0
+        total = 0
+
+        for start in range(0, len(order), batch_size):
+            indices = order[start:start + batch_size]
+            inputs = torch.as_tensor(X_train[indices], dtype=torch.float32, device=device)
+            targets = torch.as_tensor(y_train[indices], dtype=torch.long, device=device)
+
+            optimiser.zero_grad()
+            logits = model(inputs)
+            loss = loss_fn(logits, targets)
+            loss.backward()
+            optimiser.step()
+
+            batch_losses.append(float(loss.item()))
+            correct += int((logits.argmax(dim=1) == targets).sum().item())
+            total += len(indices)
+
+        model.eval()
+        test_loss_total = 0.0
+        test_correct = 0
+        test_total = 0
+        with torch.no_grad():
+            for start in range(0, len(X_test), batch_size):
+                inputs = torch.as_tensor(
+                    X_test[start:start + batch_size], dtype=torch.float32, device=device
+                )
+                targets = torch.as_tensor(
+                    y_test[start:start + batch_size], dtype=torch.long, device=device
+                )
+                logits = model(inputs)
+                loss = loss_fn(logits, targets)
+                count = len(targets)
+                test_loss_total += float(loss.item()) * count
+                test_correct += int((logits.argmax(dim=1) == targets).sum().item())
+                test_total += count
+
+        train_loss = sum(batch_losses) / len(batch_losses)
+        train_acc = correct / total
+        test_loss = test_loss_total / test_total
+        test_acc = test_correct / test_total
+        history["train_loss"].append(train_loss)
+        history["train_acc"].append(train_acc)
+        history["test_loss"].append(test_loss)
+        history["test_acc"].append(test_acc)
+        print(
+            f"epoch {epoch + 1}/{epochs} "
+            f"train_loss={train_loss:.4f} train_acc={train_acc:.3f} "
+            f"test_loss={test_loss:.4f} test_acc={test_acc:.3f}"
+        )
+
+    return history
 
 
 def count_trainable(model):
