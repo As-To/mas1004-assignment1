@@ -1,0 +1,30 @@
+reading C:\Users\asmae\Documents\5IF\Data_AI_Sogang\mas1004-assignment1\data\clean
+450 images, 3 classes, read in 8 s
+  basketball_dunk          150
+  basketball_jump_shot     150
+  basketball_layup         150
+training on 360, testing on 90
+model has 11,178,051 parameters, 1,539 of them will be trained
+epoch 1/10 train_loss=1.0630 train_acc=0.439 test_loss=1.0196 test_acc=0.411
+epoch 2/10 train_loss=0.9113 train_acc=0.578 test_loss=0.9474 test_acc=0.456
+epoch 3/10 train_loss=0.8135 train_acc=0.628 test_loss=0.8862 test_acc=0.478
+epoch 4/10 train_loss=0.7904 train_acc=0.631 test_loss=0.9029 test_acc=0.589
+epoch 5/10 train_loss=0.7626 train_acc=0.669 test_loss=0.8458 test_acc=0.544
+epoch 6/10 train_loss=0.6941 train_acc=0.739 test_loss=0.8196 test_acc=0.611
+epoch 7/10 train_loss=0.6870 train_acc=0.739 test_loss=0.8159 test_acc=0.622
+epoch 8/10 train_loss=0.6587 train_acc=0.725 test_loss=0.8225 test_acc=0.589
+epoch 9/10 train_loss=0.6228 train_acc=0.764 test_loss=0.7885 test_acc=0.600
+epoch 10/10 train_loss=0.6030 train_acc=0.792 test_loss=0.7834 test_acc=0.589
+
+trained in 1.0 minutes
+train accuracy 81.9%
+test  accuracy 58.9%
+wrote C:\Users\asmae\Documents\5IF\Data_AI_Sogang\mas1004-assignment1\results\frozen_curves.png
+wrote C:\Users\asmae\Documents\5IF\Data_AI_Sogang\mas1004-assignment1\results\frozen_confusion.png
+worst_examples is not written yet (Problem 5), so there is no frozen_worst.png this time
+wrote C:\Users\asmae\Documents\5IF\Data_AI_Sogang\mas1004-assignment1\results\frozen_model.pt
+
+One line for your experiment table:
+| frozen | ImageNet | last layer | 10 | 0.001 | 1,539 | 81.9% | 58.9% |
+
+To put this model on your web page: python src/export_web.py --tag frozen

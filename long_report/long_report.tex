@@ -1,24 +1,11 @@
 % MAS1004 Assignment 1: long report.
-%
-% You fill this in with your agent, in your repository. AGENTS.md tells the
-% agent how. Red text in the PDF is what still has to be replaced.
-%
-% - Pictures go in figures/. Copy them from results/, which is not in git.
-% - Outputs go in outputs/. run.py saves what it prints in
-%   results/<tag>_output.txt, and PLAN.md saves the other outputs in results/
-%   with `| tee results/...`. Copy them here. \outputfile{outputs/check.txt}
-%   prints a file exactly as it is. Every number in this report has to come
-%   from such an output.
-%
-% To make the PDF: compress this folder into a zip, and on Overleaf choose
-% New Project, Upload Project. Set Menu, Compiler to XeLaTeX, and Recompile.
-
+% Student-only decisions and Problem 7 material remain explicitly marked.
 \documentclass[11pt]{article}
 \usepackage{mas1004}
 
 \reporttitle{Assignment 1: Long report}
-\studentname{Your name}
-\studentid{Your student ID}
+\studentname{[STUDENT: add your name]}
+\studentid{[STUDENT: add your student ID]}
 
 \begin{document}
 \makeheader
@@ -27,23 +14,23 @@
 \section*{Problem 1. Categories and images}
 
 \subsection*{Why these categories}
-\fillin{Why these categories, and why you care about them.}
+\fillin{[STUDENT REVIEW: explain why you chose basketball jump shot, basketball layup, and basketball dunk, and why you care about distinguishing them.]}
 
 \subsection*{What I expected the model to use}
-\fillin{What you thought, before training, the model would use to tell them
-apart: shape, colour, texture, background, or something else.}
+\fillin{[STUDENT REVIEW: before training, record which visual features you expected the model to use, such as body pose, ball position, hoop position, clothing, colour, texture, or background.]}
 
 \subsection*{Images per category}
-\fillin{How many images you got for each category.}
+The collection step obtained 150 images for each category: basketball\_dunk, basketball\_jump\_shot, and basketball\_layup. After the documented cleaning, the saved count was 123 basketball\_dunk images, 61 basketball\_jump\_shot images, and 65 basketball\_layup images; the complete count output is included in Problem 4.
 
 % ---------------------------------------------------------------------------
 \section*{Problem 2. Preparing an image}
 
-\sidebyside{figures/prepare_original.jpg}{\fillin{the image as downloaded}}
-           {figures/prepare_result.png}{\fillin{what prepare\_image made of it}}
+\picturefile{figures/problem2_comparison.png}
+\picturefile{figures/prepare_resize_crop_check.png}
 
-\fillin{What was cut off, and an image where the crop cut off part of the
-thing you care about.}
+The saved comparisons show the original image beside the inverse-normalized display of \texttt{prepare\_image}. The crop check documents the required preparation: resize the shorter side to 256, then take a centered 224 by 224 crop. In the documented example, the crop removes material from the left and right sides of the 1920 by 1080 original; the report image shows the crop region and the resulting 224 by 224 display.
+
+\fillin{[STUDENT REVIEW: identify an image in the comparison where the center crop cuts off part of a feature you care about, and explain what was cut off.]}
 
 % ---------------------------------------------------------------------------
 \section*{Problem 3. First training runs}
@@ -53,110 +40,123 @@ thing you care about.}
 \toprule
 tag & start & trained & epochs & lr & trainable parameters & train acc. & test acc. \\
 \midrule
-\multicolumn{8}{l}{\fillin{one row per run, as run.py printed it}} \\
+run & ImageNet & all layers & 10 & 0.0001 & 11,178,051 & 99.4\% & 78.9\% \\
+scratch & random & all layers & 10 & 0.0001 & 11,178,051 & 88.3\% & 54.4\% \\
+frozen & ImageNet & last layer & 10 & 0.001 & 1,539 & 81.9\% & 58.9\% \\
+five\_epochs & ImageNet & all layers & 5 & 0.0001 & 11,178,051 & 99.4\% & 73.3\% \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \picturefile{figures/run_curves.png}
+\fillin{[STUDENT REVIEW: describe whether the run loss went down, whether it continued downward or flattened, and what the curves suggest.]}
 
-\fillin{Did the loss go down? Did it keep going down, or flatten out?}
-
-\fillin{The gap between train and test accuracy, and what it means.}
+The run finished with 99.4\% training accuracy and 78.9\% test accuracy, so the training accuracy was higher than the held-out test accuracy. \fillin{[STUDENT REVIEW: explain what you think this train--test gap means.]}
 
 \begin{center}\picturefile[0.5\linewidth]{figures/run_confusion.png}\end{center}
 
-\fillin{Which two categories it mixes up most, and whether that surprised you.}
+The run confusion matrix has its largest two-way mix-up between basketball\_dunk and basketball\_layup: 5 dunk images were predicted as layup and 5 layup images were predicted as dunk. \fillin{[STUDENT REVIEW: say whether this surprised you and why.]}
 
-\fillin{How far apart the test accuracies are, starting from ImageNet and from
-random numbers, and why you think that is.}
+The ImageNet-started all-layer run reached 78.9\% test accuracy, while the random-start all-layer run reached 54.4\%. The ImageNet-started frozen-last-layer run reached 58.9\%. \fillin{[STUDENT REVIEW: explain why you think the ImageNet and random results differ, and how close last-layer-only training is to all-layer training.]}
 
-\fillin{How close training only the last layer gets to training all of them.}
+\subsection*{Saved run figures}
+\picturefile{figures/scratch_curves.png}
+\picturefile{figures/scratch_confusion.png}
+\picturefile{figures/frozen_curves.png}
+\picturefile{figures/frozen_confusion.png}
+\picturefile{figures/five_epochs_curves.png}
+\picturefile{figures/five_epochs_confusion.png}
 
 \subsection*{Output of the runs}
 \outputfile{outputs/run_output.txt}
 \outputfile{outputs/scratch_output.txt}
 \outputfile{outputs/frozen_output.txt}
-% One more line like these for the setting you chose, named by its tag.
-\fillin{the output of the run with your own setting}
+\outputfile{outputs/five_epochs_output.txt}
 
 % ---------------------------------------------------------------------------
 \section*{Problem 4. Cleaning}
 
 \subsection*{My rule}
-\fillin{Your rule, in one or two sentences, as you wrote it before you
-started.}
+\fillin{[STUDENT REVIEW: insert the cleaning rule exactly as you wrote it before cleaning.]}
 
 \subsection*{Three kinds of junk}
-\fillin{Three kinds of junk, with one picture of each.}
-
-% For example: \picturefile[0.3\linewidth]{figures/junk_1.jpg}
+The saved removal log and count output include, among other reasons, \texttt{Video thumbnail}, \texttt{Drawing}, and \texttt{Tutorial}. The saved near-copy sheet also visibly documents duplicate pairs and examples of non-photographic material. \fillin{[STUDENT REVIEW: select one picture for each of your three junk types and explain why each violates your rule.]}
+\picturefile{figures/copies.png}
+\picturefile{figures/basketball_dunk.png}
+\picturefile{figures/basketball_jump_shot.png}
+\picturefile{figures/basketball_layup.png}
 
 \subsection*{What I removed}
 \outputfile{outputs/clean_count.txt}
 
-\fillin{How many near copies it found, and what you did with them.}
+The saved suspects sheet contained 33 near-duplicate pairs. \fillin{[STUDENT REVIEW: state which image from each pair you removed or kept, using the exact pair list if your instructor requires it.]}
 
-\fillin{Of the first 20 suspects in each class, how many you removed. Whether
-the suspects included junk you had missed, and whether you found junk it did
-not list.}
+Among the first 20 ranked suspects in each class, the removal log shows 6 removed for basketball\_dunk, 16 removed for basketball\_jump\_shot, and 13 removed for basketball\_layup. \fillin{[STUDENT REVIEW: say whether these suspects included junk you had missed and whether you found junk not listed by the suspects tool.]}
 
 \subsection*{Before and after cleaning}
 \outputfile{outputs/compare.txt}
 
-\fillin{The test accuracy and the accuracy on your new images, before and
-after. If a number went down, why you think it did.}
+The saved comparison reports the original run at 78.9\% downloaded-test accuracy and 55.6\% new-image accuracy, and the saved clean run at 72.0\% downloaded-test accuracy and 50.0\% new-image accuracy. \fillin{[STUDENT REVIEW: explain why either accuracy may have gone down, remembering that cleaning changed the downloaded test set.]}
+
+\picturefile{figures/clean_curves.png}
+\begin{center}\picturefile[0.5\linewidth]{figures/clean_confusion.png}\end{center}
 
 % ---------------------------------------------------------------------------
 \section*{Problem 5. Images from a new source}
 
-\fillin{Where your new images came from, and why you are sure none of them are
-among your downloads.}
+\fillin{[STUDENT REVIEW: identify where the new images came from and why you are sure they were not among the downloaded images.]}
 
 \outputfile{outputs/overlap.txt}
 
-\fillin{The accuracy on your downloaded test set and on your new images, side
-by side.}
+The overlap output says that none of the 18 new images was a near copy of the 448 downloaded images; the closest similarity was 0.87, below the reported near-copy threshold of 0.95.
 
-\fillin{Five mistakes it was confident about, with the pictures. For each one,
-what in the image you think pushed it the wrong way.}
+The saved comparison gives the downloaded-test and new-image accuracies side by side as follows: original \texttt{run}: 78.9\% and 55.6\%; clean: 72.0\% and 50.0\%. The later exported-model check records 12/18 = 66.7\% on new images; that complete output is in the appendix.
 
-\fillin{What is different about your new images: background, lighting, angle,
-distance, what else is in the frame.}
+\subsection*{Five confident mistakes}
+\picturefile{figures/problem5_preparation_comparison.png}
+
+The five mistakes listed by the saved check output are:
+
+\begin{itemize}
+\item \texttt{IMG\_6103.jpg}: true basketball\_dunk; predicted basketball\_jump\_shot (94\%).
+\item \texttt{IMG\_6084.jpg}: true basketball\_dunk; predicted basketball\_layup (89\%).
+\item \texttt{IMG\_6077.jpg}: true basketball\_dunk; predicted basketball\_jump\_shot (70\%).
+\item \texttt{IMG\_6108.jpg}: true basketball\_dunk; predicted basketball\_jump\_shot (69\%).
+\item \texttt{IMG\_6063.jpg}: true basketball\_layup; predicted basketball\_jump\_shot (57\%).
+\end{itemize}
+
+\fillin{[STUDENT REVIEW: for each of the five pictures, explain what visual detail you think pushed the model toward its wrong class. Do not replace this with an unverified claim.]}
+
+\fillin{[STUDENT REVIEW: compare the new images with the downloaded images in background, lighting, angle, distance, and other content in the frame.]}
 
 % ---------------------------------------------------------------------------
 \section*{Problem 6. The demo}
 
-Address: \fillin{your GitHub Pages address}
+Address: \fillin{[STUDENT REVIEW: insert the published GitHub Pages URL. The saved check output says docs/model.onnx, docs/model.json, and docs/selftest.json were missing or not committed, so no verified published URL is available in the project files.]}
 
-\fillin{What happens when you show it something that is none of your
-categories.}
+\fillin{[STUDENT REVIEW: record what happens when you show the demo an image that is none of the three categories.]}
 
 % ---------------------------------------------------------------------------
 \section*{Problem 7. What the model looks at}
 
-% Copy this subsection once for every guess.
-\subsection*{Guess 1}
+\fillin{[STUDENT REVIEW: add one subsection for every hypothesis you chose. The required material is listed below; no hypotheses, experimental reasoning, exact prompts, or before/after model answers were supplied in the verified project outputs.]}
 
-\fillin{The guess, and what in your images or your model's mistakes made you
-think of it.}
+\subsection*{Guess 1 --- student material required}
+\fillin{[STUDENT: hypothesis and evidence from your images or mistakes]}
 
-\fillin{The change you chose, and why it tests the guess.}
+\fillin{[STUDENT: exact change chosen and why it tests the hypothesis]}
 
 My request to the agent, word for word:
 \begin{quote}
-\fillin{the request}
+\fillin{[STUDENT: paste the exact request]}
 \end{quote}
 
-% One \sidebyside for every image you changed.
-\sidebyside{figures/guess1_original_1.jpg}{\fillin{original: the model's answer}}
-           {figures/guess1_changed_1.jpg}{\fillin{changed: the model's answer}}
+\fillin{[STUDENT: add the original and changed images, and record the model answer before and after for every image]}
 
-\fillin{What the results say about the guess.}
+\fillin{[STUDENT: conclusion about the hypothesis and confidence]}
 
 \subsection*{What I now think the model uses}
-\fillin{What you now think the model uses to tell your categories apart, and
-how sure you are.}
+\fillin{[STUDENT REVIEW: summarize the conclusions from all Problem 7 experiments and state how sure you are.]}
 
 % ---------------------------------------------------------------------------
 \section*{Appendix. Output of check.py}

@@ -1,0 +1,30 @@
+reading C:\Users\asmae\Documents\5IF\Data_AI_Sogang\mas1004-assignment1\data\clean
+249 images, 3 classes, read in 9 s
+  basketball_dunk          123
+  basketball_jump_shot     61
+  basketball_layup         65
+training on 199, testing on 50
+model has 11,178,051 parameters, 11,178,051 of them will be trained
+epoch 1/10 train_loss=0.8921 train_acc=0.588 test_loss=1.0105 test_acc=0.540
+epoch 2/10 train_loss=0.2049 train_acc=0.995 test_loss=0.7874 test_acc=0.620
+epoch 3/10 train_loss=0.0905 train_acc=1.000 test_loss=0.6940 test_acc=0.700
+epoch 4/10 train_loss=0.0728 train_acc=1.000 test_loss=0.6144 test_acc=0.760
+epoch 5/10 train_loss=0.1099 train_acc=0.985 test_loss=0.6194 test_acc=0.780
+epoch 6/10 train_loss=0.0649 train_acc=0.990 test_loss=0.6560 test_acc=0.760
+epoch 7/10 train_loss=0.0206 train_acc=1.000 test_loss=0.6212 test_acc=0.740
+epoch 8/10 train_loss=0.0288 train_acc=0.995 test_loss=0.6366 test_acc=0.720
+epoch 9/10 train_loss=0.0099 train_acc=1.000 test_loss=0.6508 test_acc=0.720
+epoch 10/10 train_loss=0.0069 train_acc=1.000 test_loss=0.6394 test_acc=0.700
+
+trained in 1.3 minutes
+train accuracy 100.0%
+test  accuracy 70.0%
+wrote C:\Users\asmae\Documents\5IF\Data_AI_Sogang\mas1004-assignment1\results\clean_curves.png
+wrote C:\Users\asmae\Documents\5IF\Data_AI_Sogang\mas1004-assignment1\results\clean_confusion.png
+wrote C:\Users\asmae\Documents\5IF\Data_AI_Sogang\mas1004-assignment1\results\clean_worst.png
+wrote C:\Users\asmae\Documents\5IF\Data_AI_Sogang\mas1004-assignment1\results\clean_model.pt
+
+One line for your experiment table:
+| clean | ImageNet | all layers | 10 | 0.0001 | 11,178,051 | 100.0% | 70.0% |
+
+To put this model on your web page: python src/export_web.py --tag clean

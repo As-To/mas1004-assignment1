@@ -1,0 +1,25 @@
+reading C:\Users\asmae\Documents\5IF\Data_AI_Sogang\mas1004-assignment1\data\clean
+450 images, 3 classes, read in 7 s
+  basketball_dunk          150
+  basketball_jump_shot     150
+  basketball_layup         150
+training on 360, testing on 90
+model has 11,178,051 parameters, 11,178,051 of them will be trained
+epoch 1/5 train_loss=0.8763 train_acc=0.553 test_loss=0.7930 test_acc=0.644
+epoch 2/5 train_loss=0.2410 train_acc=0.967 test_loss=0.7170 test_acc=0.678
+epoch 3/5 train_loss=0.0930 train_acc=0.989 test_loss=0.6463 test_acc=0.678
+epoch 4/5 train_loss=0.0388 train_acc=0.997 test_loss=0.6083 test_acc=0.667
+epoch 5/5 train_loss=0.0302 train_acc=0.994 test_loss=0.5967 test_acc=0.733
+
+trained in 1.6 minutes
+train accuracy 99.4%
+test  accuracy 73.3%
+wrote C:\Users\asmae\Documents\5IF\Data_AI_Sogang\mas1004-assignment1\results\five_epochs_curves.png
+wrote C:\Users\asmae\Documents\5IF\Data_AI_Sogang\mas1004-assignment1\results\five_epochs_confusion.png
+worst_examples is not written yet (Problem 5), so there is no five_epochs_worst.png this time
+wrote C:\Users\asmae\Documents\5IF\Data_AI_Sogang\mas1004-assignment1\results\five_epochs_model.pt
+
+One line for your experiment table:
+| five_epochs | ImageNet | all layers | 5 | 0.0001 | 11,178,051 | 99.4% | 73.3% |
+
+To put this model on your web page: python src/export_web.py --tag five_epochs
